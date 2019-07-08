@@ -1,0 +1,10 @@
+default: &default
+  adapter: solr
+  url: <%= ENV.fetch("SOLR_URL") %>
+
+development:
+  <<: *default
+test: &test
+  <<: *default
+production:
+  <<: *default

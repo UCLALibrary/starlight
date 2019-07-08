@@ -1,0 +1,57 @@
+version: '3.7'
+services:
+  web:
+    build: ../../.
+    env_file:
+      - ../.env.docker
+    volumes:
+      - ../../.:/home/starlight/app
+    working_dir: /home/starlight/app
+    command: sh -ic "bundle exec puma -b tcp://0.0.0.0:3000"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+      - redis
+      - solr
+    stdin_open: true
+    tty: true
+
+  sidekiq:
+    build: ../../.
+    env_file:
+      - ../.env.docker
+    volumes:
+      - ../../.:/home/starlight/app
+    working_dir: /home/starlight/app
+    entrypoint: sh -ic "bundle exec sidekiq"
+    depends_on:
+      - database
+      - redis
+      - solr
+    stdin_open: true
+    tty: true
+
+  redis:
+    image: redis:5.0-alpine
+    command: redis-server
+    volumes:
+      - redis:/data
+
+  database:
+    image: postgres:11-alpine
+    volumes:
+      - starlight_database:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  solr:
+    build: ../../../docker/solr
+    env_file:
+      - ../.env.docker
+    ports:
+     - '8983:8983'
+
+volumes:
+  starlight_database:
+  redis:
