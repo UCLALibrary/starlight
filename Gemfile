@@ -20,7 +20,6 @@ gem "omniauth"
 gem "omniauth-google-oauth2"
 gem "omniauth-shibboleth"
 gem "optimist"
-gem "pg"
 gem "puma"
 gem "rails", "~> 5.2.3"
 gem "riiif", git: "https://github.com/curationexperts/riiif.git"
@@ -29,6 +28,9 @@ gem "sass-rails"
 gem "sidekiq"
 gem "sitemap_generator"
 gem "uglifier", ">= 1.3.0"
+
+gem 'mysql2', '~> 0.5'
+gem 'dotenv-rails'
 
 group :development, :test do
   gem "byebug"
