@@ -3,17 +3,33 @@
 SSHKit.config.command_map[:rake] = "bundle exec rake"
 
 set :application, "starlight"
+set :repo_url, "https://github.com/UCLALibrary/starlight.git"
 
-set :repo_url, "https://gitlab.com/surfliner/surfliner.git"
-set :repo_tree, "starlight"
+set :deploy_to, '/opt/starlight'
+set :rails_env, 'production'
 
-set :deploy_to, ENV.fetch("CAP_TARGET", "/opt/starlight")
+if ENV['VIA_JUMP'] == "yes"
+  require 'net/ssh/proxy/command'
 
-set :rbenv_type, :system
+  # Define the hostanme of the server to tunnel through
+  jump_host = ENV['JUMP_HOST'] || 'jump.library.ucla.edu'
+
+  # Define the port number of the jump host
+  jump_port = ENV['JUMP_PORT'] || '31926'
+
+  # Define the username for tunneling
+  jump_user = ENV['JUMP_USER'] || ENV['USER']
+
+  # Configure Capistrano to use the jump host as a proxy
+  ssh_command = "ssh -p #{jump_port} #{jump_user}@#{jump_host} -W %h:%p"
+  set :ssh_options, proxy: Net::SSH::Proxy::Command.new(ssh_command)
+end
 
 set :log_level, :debug
 set :bundle_flags, "--without=development test"
 set :bundle_env_variables, nokogiri_use_system_libraries: 1
+
+set :default_env, 'PASSENGER_INSTANCE_REGISTRY_DIR' => '/var/run'
 
 set :keep_releases, 2
 set :passenger_restart_with_touch, true
@@ -29,6 +45,6 @@ set :linked_dirs, %w[
 ]
 
 # Default branch is :master
-set :branch, ENV["CAP_REVISION"] || "master"
+set :branch, ENV['REVISION'] || ENV['BRANCH'] || ENV['BRANCH_NAME'] || 'master'
 
 after "deploy:restart", "sidekiq:restart"
