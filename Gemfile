@@ -30,7 +30,6 @@ gem "sitemap_generator"
 gem "uglifier", ">= 1.3.0"
 
 gem 'mysql2', '~> 0.5'
-gem 'dotenv-rails'
 
 group :development, :test do
   gem "byebug"
@@ -38,7 +37,6 @@ group :development, :test do
   gem "capistrano-bundler"
   gem "capistrano-passenger"
   gem "capistrano-rails", ">= 1.1.3"
-  gem "capistrano-rbenv"
   gem "capistrano-yarn"
   gem "capybara"
   gem "capybara-screenshot"
