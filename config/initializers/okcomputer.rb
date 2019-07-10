@@ -6,4 +6,4 @@ OkComputer.mount_at = "health"
 
 # Setup additional services
 # OKComputer provides app/default and ActiveRecord 'out of the box'
-OkComputer::Registry.register "solr", OkComputer::SolrCheck.new("ENV['SOLR_URL]")
+OkComputer::Registry.register "solr", OkComputer::SolrCheck.new(ENV[SOLR_URL])
