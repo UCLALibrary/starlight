@@ -1,5 +1,5 @@
 defaults: &defaults
-  address: <%= ENV.fetch('SMTP_HOST') %>
+  address: <%= ENV['SMTP_HOST'] %>
   port: 25
   enable_starttls_auto: true
 
