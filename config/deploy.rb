@@ -35,14 +35,14 @@ set :keep_releases, 2
 set :passenger_restart_with_touch, true
 set :assets_prefix, "#{shared_path}/public/assets"
 
-set :linked_dirs, %w[
-  tmp/pids
-  tmp/cache
-  tmp/sockets
-  public/assets
-  public/uploads
-  public/sitemaps
-]
+append :linked_dirs, "log"
+append :linked_dirs, "public/assets"
+append :linked_dirs, "tmp/pids"
+append :linked_dirs, "tmp/cache"
+append :linked_dirs, "tmp/sockets"
+
+append :linked_files, ".env.production"
+append :linked_files, "config/secrets.yml"
 
 # Default branch is :master
 set :branch, ENV['REVISION'] || ENV['BRANCH'] || ENV['BRANCH_NAME'] || 'master'
